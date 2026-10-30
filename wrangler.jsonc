@@ -20,6 +20,8 @@
   ],
 
   "vars": {
+    // Where contact form emails go. Must match destination_address above.
+    "CONTACT_TO": "info@veratekdesign.com",
     // Sender address for contact form emails. Must be on a domain set up in Email Service.
     "CONTACT_FROM": "website@veratekdesign.com"
   },

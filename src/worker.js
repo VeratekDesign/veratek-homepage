@@ -40,7 +40,7 @@ async function handleContact(request, env) {
 
   try {
     await env.EMAIL.send({
-      // No "to": the binding in wrangler.jsonc fixes the recipient.
+      to: env.CONTACT_TO,
       from: { email: env.CONTACT_FROM, name: "Veratek Design Website" },
       replyTo: { email: fields.email, name: fields.name },
       subject: `Website contact: ${fields.subject}`,
