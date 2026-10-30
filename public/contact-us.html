@@ -35,8 +35,8 @@
         </div>
       </section>
 
-      <!-- No server backend: the form opens the visitor's email app with the message filled in. -->
-      <form class="contact-form" id="contact-form">
+      <!-- Sent to /api/contact (src/worker.js), which checks Turnstile and emails info@. -->
+      <form class="contact-form" id="contact-form" action="/api/contact" method="post">
         <label for="name">Name: <span>*</span></label>
         <input id="name" name="name" required>
         <label for="email">Email: <span>*</span></label>
@@ -45,7 +45,12 @@
         <input id="subject" name="subject" required>
         <label for="message">Message: <span>*</span></label>
         <textarea id="message" name="message" required></textarea>
+        <!-- Honeypot: hidden from people, bots fill it in. -->
+        <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <!-- Turnstile site key. 1x00000000000000000000AA is Cloudflare's always-pass test key; replace with the real one. -->
+        <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-appearance="interaction-only"></div>
         <button type="submit">Submit</button>
+        <p class="form-status" id="form-status" role="status"></p>
       </form>
     </div>
   </main>
@@ -70,13 +75,28 @@
     </div>
   </footer>
 
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script>
-    document.getElementById("contact-form").addEventListener("submit", function (e) {
+    document.getElementById("contact-form").addEventListener("submit", async function (e) {
       e.preventDefault();
-      var f = this.elements;
-      var body = f.message.value + "\n\n" + f.name.value + "\n" + f.email.value;
-      location.href = "mailto:info@veratekdesign.com?subject=" + encodeURIComponent(f.subject.value) +
-        "&body=" + encodeURIComponent(body);
+      var form = this;
+      var status = document.getElementById("form-status");
+      var button = form.querySelector("button");
+      button.disabled = true;
+      status.className = "form-status";
+      status.textContent = "Sending…";
+      var data = await fetch(form.action, { method: "POST", body: new FormData(form) })
+        .then(function (res) { return res.json(); })
+        .catch(function () { return {}; });
+      if (data.ok) {
+        form.reset();
+        status.textContent = "Thank you for contacting us! If needed, you will hear back within 48-72 hours.";
+      } else {
+        status.className = "form-status error";
+        status.textContent = data.error || "Sorry, your message could not be sent. Please email us directly.";
+        button.disabled = false;
+      }
+      if (window.turnstile) turnstile.reset();
     });
   </script>
 </body>

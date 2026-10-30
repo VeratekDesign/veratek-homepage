@@ -109,7 +109,7 @@ h1, h2, h3 { color: #333; text-transform: uppercase; margin: 0; }
 
 /* About */
 
-.page { padding: 60px 0 50px; }
+.page { padding-top: 60px; padding-bottom: 50px; }
 
 .two-col {
   display: grid;
@@ -200,6 +200,14 @@ h1, h2, h3 { color: #333; text-transform: uppercase; margin: 0; }
   cursor: pointer;
 }
 .contact-form button:hover { background: #999; }
+.contact-form button:disabled { opacity: 0.6; cursor: default; }
+
+.contact-form .hp { position: absolute; left: -9999px; }
+
+.cf-turnstile { margin-bottom: 16px; }
+
+.form-status { margin: 16px 0 0; color: #333; }
+.form-status.error { color: #c00; }
 
 /* Footer */
 

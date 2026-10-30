@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local testing with `npx wrangler dev`.
+# Cloudflare's always-pass Turnstile test secret:
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA

@@ -28,6 +28,7 @@ $RECYCLE.BIN/
 .wrangler/
 node_modules/
 .env
+.dev.vars
 *.log
 
 # Reference material (not part of the site)

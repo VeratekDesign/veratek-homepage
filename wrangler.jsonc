@@ -1,0 +1,30 @@
+// Cloudflare Workers configuration for veratekdesign.com.
+// Docs: https://developers.cloudflare.com/workers/wrangler/configuration/
+{
+  "name": "veratek-homepage",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-01",
+
+  // The website itself: every file in public/ is served as-is.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+
+  // Contact form email. This binding can only ever send to this one address.
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "destination_address": "info@veratekdesign.com"
+    }
+  ],
+
+  "vars": {
+    // Sender address for contact form emails. Must be on a domain set up in Email Service.
+    "CONTACT_FROM": "website@veratekdesign.com"
+  },
+
+  // Secret (not stored here): TURNSTILE_SECRET_KEY. See README.
+
+  "observability": { "enabled": true }
+}
