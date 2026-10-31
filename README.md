@@ -1,6 +1,6 @@
 # Veratek Design website
 
-Website for [veratekdesign.com](https://www.veratekdesign.com): plain HTML and CSS with no build step, plus one small Cloudflare Worker for the contact form.
+Website for [veratekdesign.com](https://veratekdesign.com): plain HTML and CSS with no build step, plus one small Cloudflare Worker for the contact form.
 
 ```
 public/              The website (served as-is)
@@ -16,7 +16,7 @@ src/worker.js        Contact form handler (/api/contact)
 wrangler.jsonc       Cloudflare Worker configuration
 ```
 
-Pages are linked without `.html` (`/about-us`), and `https://www.veratekdesign.com` is the main address (see the canonical link in each page).
+Pages are linked without `.html` (`/about-us`), and `https://veratekdesign.com` is the main address (see the canonical link in each page).
 
 ## Local preview
 
