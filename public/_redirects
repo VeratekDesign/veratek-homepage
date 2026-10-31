@@ -1,2 +1,6 @@
-/home.html  /  301
-/home       /  301
+# Old addresses → current ones (301 = permanent, so bookmarks and search results update)
+/home.html        /            301
+/home             /            301
+/index.html       /            301
+/about-us.html    /about-us    301
+/contact-us.html  /contact-us  301

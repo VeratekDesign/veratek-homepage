@@ -9,27 +9,25 @@ public/              The website (served as-is)
   contact-us.html      Contact Us
   css/style.css        Shared styles
   images/              Logo, favicon and photos
-  _redirects           Old /home.html → /
+  _redirects           Old addresses (/home.html, *.html) → clean URLs, 301
+  robots.txt           Search engine rules
+  sitemap.xml          Page list for search engines
 src/worker.js        Contact form handler (/api/contact)
 wrangler.jsonc       Cloudflare Worker configuration
 ```
 
+Pages are linked without `.html` (`/about-us`), and `https://www.veratekdesign.com` is the main address (see the canonical link in each page).
+
 ## Local preview
 
-Pages only (the contact form won't send):
-
-```bash
-python3 -m http.server 8000 -d public
-```
-
-Full site including the contact form (needs [Node.js](https://nodejs.org)):
+Needs [Node.js](https://nodejs.org):
 
 ```bash
 cp .dev.vars.example .dev.vars
 npx wrangler dev
 ```
 
-Locally, emails are printed to the terminal, not sent.
+Then open http://localhost:8787. Locally, contact form emails are printed to the terminal, not sent.
 
 ## Deployment
 
