@@ -11,22 +11,17 @@
     "binding": "ASSETS"
   },
 
-  // Contact form email. This binding can only ever send to this one address.
-  "send_email": [
-    {
-      "name": "EMAIL",
-      "destination_address": "info@veratekdesign.com"
-    }
-  ],
-
   "vars": {
-    // Where contact form emails go. Must match destination_address above.
+    // Where contact form emails go (Google Group).
     "CONTACT_TO": "info@veratekdesign.com",
-    // Sender address for contact form emails. Must be on a domain set up in Email Service.
+    // Google Workspace user the form sends as (through the Gmail API). Also Cc'd, because Gmail
+    // won't show the sender its own copy of a message to a group it belongs to.
+    "GMAIL_SENDER": "anthony@veratekdesign.com",
+    // From address on contact form emails. Must be GMAIL_SENDER or one of its "Send mail as" aliases.
     "CONTACT_FROM": "website@veratekdesign.com"
   },
 
-  // Secret (not stored here): TURNSTILE_SECRET_KEY. See README.
+  // Secrets (not stored here): TURNSTILE_SECRET_KEY and GOOGLE_SERVICE_ACCOUNT. See README.
 
   "observability": { "enabled": true }
 }

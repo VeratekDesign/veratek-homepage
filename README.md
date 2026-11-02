@@ -39,12 +39,19 @@ The form posts to `/api/contact`. The Worker:
 
 1. Silently drops submissions that fill in the hidden "website" field (only bots do).
 2. Checks the [Turnstile](https://developers.cloudflare.com/turnstile/) token, Cloudflare's free CAPTCHA alternative.
-3. Emails the message to info@veratekdesign.com through [Cloudflare Email Service](https://developers.cloudflare.com/email-service/), with the visitor's address as Reply-To.
+3. Emails the message to info@veratekdesign.com (a Google Group) through **Google Workspace**, using the [Gmail API](https://developers.google.com/workspace/gmail/api/guides/sending), with the visitor's address as Reply-To.
+
+Sending uses a Google Cloud **service account** that Google Admin allows to use only the `gmail.send` scope, acting as `GMAIL_SENDER`. It can send mail but can't read any mailbox. No paid Cloudflare email product is needed.
+
+Addresses are set in `wrangler.jsonc`:
+- `CONTACT_TO`: the recipient.
+- `GMAIL_SENDER`: the Workspace user the form sends as.
+- `CONTACT_FROM`: the From address, which must be that user or one of its "Send mail as" aliases.
 
 ### One-time setup
 
-1. **Email Service:** in the Cloudflare dashboard, onboard `veratekdesign.com` for sending. This adds SPF and DKIM records plus bounce records on a `cf-bounce` subdomain. If the domain already has an SPF record (for example from your mail host), merge them into one record rather than having two.
-2. **Verify the recipient:** add info@veratekdesign.com as a destination address and click the link in the verification email.
-3. **Turnstile:** create a widget for `veratekdesign.com` (Managed mode). Put its **site key** in `public/contact-us.html` in place of the test key `1x00000000000000000000AA`, and add its **secret key** to the Worker as a secret named `TURNSTILE_SECRET_KEY` (Worker → Settings → Variables and Secrets, type "Secret").
-
-The recipient is fixed in `wrangler.jsonc` (`destination_address`), and the sender address is `CONTACT_FROM` there.
+1. **Turnstile:** create a widget for `veratekdesign.com` (Managed mode). Put its **site key** in `public/contact-us.html`, and add its **secret key** to the Worker as a secret named `TURNSTILE_SECRET_KEY` (Worker → Settings → Variables and Secrets, type "Secret").
+2. **Google Cloud:** in the Google Cloud console, create a project, enable the **Gmail API**, then create a **service account** and download a **JSON key** for it.
+3. **Google Admin → Security → Access and data control → API controls → Domain-wide delegation:** add the service account's **Client ID** with the single scope `https://www.googleapis.com/auth/gmail.send`.
+4. **From address:** add `website@veratekdesign.com` as an alias of the `GMAIL_SENDER` user in Google Admin. Then, in that user's Gmail, add it under **Settings → Accounts → Send mail as**.
+5. **Worker secret:** paste the entire JSON key file as a secret named `GOOGLE_SERVICE_ACCOUNT`, then delete the downloaded file.
