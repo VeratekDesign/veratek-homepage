@@ -33,3 +33,6 @@ node_modules/
 
 # Reference material (not part of the site)
 reference-screenshots/
+
+# Local-only notes on decisions and follow-ups
+docs/
